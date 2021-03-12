@@ -19,7 +19,6 @@ public class OfferItem {
 
     private int quantity;
    // private BigDecimal totalCost;
-    // private String discountCause;
     private Product product;
     private Discount discount;
     private Money money;
