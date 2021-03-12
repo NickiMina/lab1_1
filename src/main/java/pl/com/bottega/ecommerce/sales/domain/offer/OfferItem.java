@@ -18,7 +18,6 @@ import java.util.Date;
 public class OfferItem {
 
     private int quantity;
-   // private BigDecimal totalCost;
     private Product product;
     private Discount discount;
     private Money money;
