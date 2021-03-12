@@ -2,7 +2,7 @@ package pl.com.bottega.ecommerce.sales.domain.offer;
 
 import java.math.BigDecimal;
 
-public class Money {
+public class Money implements Comparable{
 
     private BigDecimal amount;
     private String currency;
@@ -25,5 +25,15 @@ public class Money {
     }
 
     public BigDecimal multiply(BigDecimal bigDecimal) {
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o == null || o.getClass() != getClass())
+            return 0;
+
+        Money oth = (Money)o;
+
+        return amount.compareTo(oth.getAmount());
     }
 }
