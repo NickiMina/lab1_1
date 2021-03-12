@@ -23,4 +23,7 @@ public class Money {
     public String getCurrency() {
         return currency;
     }
+
+    public BigDecimal multiply(BigDecimal bigDecimal) {
+    }
 }

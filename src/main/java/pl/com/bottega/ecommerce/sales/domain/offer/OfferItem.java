@@ -20,7 +20,7 @@ public class OfferItem {
     private int quantity;
     private Product product;
     private Discount discount;
-    private Money money;
+    private Money totalCost;
 
     public OfferItem(String productID, BigDecimal productPrice, String productName,
                      Date productSnapShotDate, String productType,int quantity) {
@@ -29,16 +29,15 @@ public class OfferItem {
 
     public OfferItem(String productID, BigDecimal productPrice, String productName,
                      Date productSnapShotDate, String productType,int quantity, BigDecimal discount, String discountCause) {
-        this.product = new Product(productId, productName, new Money(productPrice), productSnapshotDate, productType);
+        this.product = new Product(productID, productName, new Money(productPrice), productSnapShotDate, productType);
         this.quantity = quantity;
-        this.money = new Money(productPrice);
 
-        BigDecimal discountValue = new BigDecimal(0);
+        this.discount = new Discount(null, new Money(new BigDecimal(0.0)));
         if (discount != null) {
-            discountValue = discountValue.subtract(discount);
+            this.discount = new Discount(discountCause, new Money(new BigDecimal(0.0).subtract(discount)));
         }
 
-        this.totalCost = productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue);
+        this.totalCost = product.getProductPrice().multiply(new BigDecimal(quantity)).subtract(this.discount.getValue());
     }
 
     public String getProductId() {
@@ -61,19 +60,19 @@ public class OfferItem {
     public String getProductType() { return product.getProductType();}
 
     public BigDecimal getTotalCost() {
-        return totalCost;
+        return totalCost.getAmount();
     }
 
     public String getTotalCostCurrency() {
-        return currency;
+        return totalCost.getCurrency();
     }
 
     public BigDecimal getDiscount() {
-        return discount;
+        return discount.getValue().getAmount();
     }
 
     public String getDiscountCause() {
-        return discountCause;
+        return discount.getDiscountCause();
     }
 
     public int getQuantity() {
@@ -86,10 +85,7 @@ public class OfferItem {
         final int prime = 31;
         int result = 1;
         result = prime * result + (discount == null ? 0 : discount.hashCode());
-        result = prime * result + (name == null ? 0 : name.hashCode());
-        result = prime * result + (productPrice == null ? 0 : productPrice.hashCode());
-        result = prime * result + (ID == null ? 0 : ID.hashCode());
-        result = prime * result + (type == null ? 0 : type.hashCode());
+        result = prime * result + (product == null ? 0 : product.hashCode());
         result = prime * result + quantity;
         result = prime * result + (totalCost == null ? 0 : totalCost.hashCode());
         return result;
@@ -114,31 +110,14 @@ public class OfferItem {
         } else if (!discount.equals(other.discount)) {
             return false;
         }
-        if (name == null) {
-            if (other.productName != null) {
-                return false;
-            }
-        } else if (!productName.equals(other.productName)) {
-            return false;
-        }
-        if (productPrice == null) {
-            if (other.productPrice != null) {
-                return false;
-            }
-        } else if (!productPrice.equals(other.productPrice)) {
-            return false;
-        }
-        if (ID == null) {
-            if (other.productId != null) {
-                return false;
-            }
-        } else if (!productId.equals(other.productId)) {
-            return false;
-        }
-        if (type != other.productType) {
-            return false;
-        }
         if (quantity != other.quantity) {
+            return false;
+        }
+        if(product==null){
+            if(other.product!=null){
+                return false;
+            }
+        } else if(!product.equals(other.product)){
             return false;
         }
         if (totalCost == null) {
