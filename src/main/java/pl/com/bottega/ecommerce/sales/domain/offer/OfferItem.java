@@ -29,7 +29,7 @@ public class OfferItem {
 
     public OfferItem(String productID, BigDecimal productPrice, String productName,
                      Date productSnapShotDate, String productType,int quantity, BigDecimal discount, String discountCause) {
-
+        this.product = new Product(productId, productName, new Money(productPrice), productSnapshotDate, productType);
         this.quantity = quantity;
         this.money = new Money(productPrice);
 
@@ -47,7 +47,7 @@ public class OfferItem {
     }
 
     public BigDecimal getProductPrice() {
-        return productPrice;
+        return product.getProductPrice().getAmount();
     }
 
     public String getProductName() {

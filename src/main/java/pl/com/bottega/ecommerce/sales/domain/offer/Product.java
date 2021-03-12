@@ -21,6 +21,9 @@ public class Product {
     public String getProductType(){return type;}
     public String getName(){return name;}
     public Date getSnapshotDate(){return snapshotDate;}
+    public Money getProductPrice(){return productPrice;}
+
+
 
 
 }
